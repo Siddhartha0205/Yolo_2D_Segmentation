@@ -1,0 +1,7 @@
+path: \\?\C:\Users\tunug\MiniProjects\Yolo_2D_segmentation\Dataset\test\YOLODataset
+train: images/train
+val: images/val
+test:
+
+names:
+    0: butterfly
