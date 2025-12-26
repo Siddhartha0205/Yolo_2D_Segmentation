@@ -7,6 +7,7 @@ I have included the information on the various steps followed for:
   <li>creating the segmentation points for ground truths and labels</li> 
   <li>preprocessing the image and label dataset</li>
   <li>training the YOLO model</li>
+  <li>evaluating the YOLO model</li>
 </ul>
 
 
@@ -16,6 +17,9 @@ I have included the information on the various steps followed for:
 
 <p float="left">
   <img src="Pictures/butterfly_image.png" width="300" />
+  <img src="Pictures/butterfly (4)_dc857453.png" width="200" />
+  <img src="Pictures/butterfly (18)_12fc9475.jpg" width="300" />
+  <img src="Pictures/butterfly (25)_2b69fb3e.jpg" width="300" />
 </p>
 
 <p>Python pip package provides a tool <b>Labelme</b> to create ground truths and associate a label for the image. It generates a JSON file storing locations for markings of segmentation map along with the label. </p>
@@ -38,13 +42,13 @@ I have included the information on the various steps followed for:
   <img src="Pictures/labelme_labelled.PNG" width="500" />
 </p>
 
-<p>A JSON file is generated storing the information about label data and normalized co-ordinates of segmentation mask. The screenshot below provides a glimpse of the generated information.</p>
+<p>A JSON file is generated, storing the information about label data and the normalized coordinates of the segmentation mask. The screenshot below provides a glimpse of the generated information.</p>
 
 <p float="left">
   <img src="Pictures/segmented_json_file.PNG" width="300" />
 </p>
 
-<p>Please mind that generating ground truths is too time consuming and demands a lot of patience. However, the generated json files are not suitable to train the YOLO model. In order to convert these files, Python pip provides another tool named <b>labelme2yolo</b>. This tools generates text files as output making it suitable for training the YOLO model both for object detection tasks and segmentation tasks. The figure below shows the command to install labelme2yolo tool using pip. </p>
+<p>Please note that generating ground truths is too time-consuming and demands a lot of patience. However, the generated JSON files are not suitable for training the YOLO model. In order to convert these files, Python pip provides another tool named <b>labelme2yolo</b>. This tools generates text files as output, making it suitable for training the YOLO model both for object detection tasks and segmentation tasks. The figure below shows the command to install the labelme2yolo tool using pip. </p>
 
 <p float="left">
   <img src="Pictures/labelme2yolo.PNG" width="500" />
@@ -56,26 +60,26 @@ I have included the information on the various steps followed for:
   <img src="Pictures/labelme2yolo_command.PNG" width="500" />
 </p>
 
-<p>Please be aware that the argument <b>polygon</b> is necessary to generate text files for segmentation task. By default, the tools generates output suitable for object detection but not for segmentation task.</p>
+<p>Please be aware that the argument <b>polygon</b> is necessary to generate text files for the segmentation task. By default, the tool generates output suitable for object detection but not for the segmentation task.</p>
 
 This concludes the dataset preparation phase. Now, the YOLO model could be downloaded and trained with this custom dataset.
 
 <h2>YOLO Training</h2>
 
-<b>YOLOv8m-seg</b> model is used in this project for detecting the presence of butterflies and adding a segmentation mask over the detection.
+The <b>YOLOv8m-seg</b> model is used in this project for detecting the presence of butterflies and adding a segmentation mask over the detection.
 
 The paths for training and validation images are updated using an yaml file.
 
-The table below provides the information on the most important libraries installed to train the model
+The table below provides information on the most important libraries installed to train the model
 
 | Library  | Description |
 | ------------- | ------------- |
 | Ultralytics  | Ultralytics provides the instance to download the YOLO model and the arguments necessary to initiate the training |
 | Pytorch  | Pytorch provides the backbone framework to support the YOLO training  |
 
-Though Ultralytics install necessary pytorch libraries automatically, they do not provide necessary CUDA support to access GPU modules in the system.
+Although Ultralytics automatically installs the necessary PyTorch libraries, it does not provide the necessary CUDA support to access GPU modules in the system.
 
-Hence it is preferred to download pytorch library from their [homepage](https://pytorch.org/get-started/locally/). These libraries provide CUDA support, thus model can access GPU for faster training.
+Hence, it is preferred to download PyTorch library from their [homepage](https://pytorch.org/get-started/locally/). These libraries provide CUDA support, thus model can access GPU for faster training.
 
 The table below provides the information on training parameters:
 
@@ -97,3 +101,33 @@ This table shows the number of samples used for training and validation
 Upon successful training, pretrained model files <i>best.pt</i> and <i>last.pt</i> are generated in <i>runs</i> folder with some other analytic metrics. We can evaluate the performance of the classifier using <i>best.pt</i> model.
 
 <h2>YOLO Evaluation</h2>
+
+<p>This section discusses the inferences generated by the model trained using the custom dataset. The trained model is evaluated using an image and videos.</p>
+
+<h3>Inference on image</h3>
+
+The image below is fed to the YOLO model during inference.
+
+<p float="left">
+  <img src="Pictures/butterfly_inference.png" width="500" />
+</p>
+
+Here is the prediction generated by the YOLO network. It has generated a bounding box around the object of interest in addition to the segmentation mask while displaying the confidence score.
+
+<p float="left">
+  <img src="Pictures/butterfly_inference_output.jpg" width="500" />
+</p>
+
+The detector is also evaluated using a video. Here is the output video generated by the YOLO model:
+
+https://github.com/user-attachments/assets/f5883da6-b042-40bd-84f6-3320d976e006
+
+It is able to detect the presence of multiple butterflies in a single frame. This output video demonstrates such capabilities of the detector:
+
+https://github.com/user-attachments/assets/593fcd54-91dc-4d3f-b99c-6879edc4423b
+
+<h2>References</h2>
+<ol>
+  <li>Dataset: https://github.com/ayoolaolafenwa/PixelLib/releases</li>
+  <li>Youtube tutorial: https://youtu.be/DMRlOWfRBKU?si=pDfLNM-utDjEmnFV</li>
+</ol>
